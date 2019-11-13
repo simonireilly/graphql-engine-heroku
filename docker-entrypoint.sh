@@ -10,14 +10,11 @@ log() {
 
 DEFAULT_MIGRATIONS_DIR="/hasura-migrations"
 TEMP_MIGRATIONS_DIR="/tmp/hasura-migrations"
-export HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR="DATABASE_URL"
-export DATABASE_URL="test:database"
-export HASURA_GRAPHQL_DATABASE_URL="every:present:default"
 
 # configure the target database for migrations
 if [ ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR} ]; then
     log "database url is pointed at env $HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR"
-    log "This is the pointed var $DATABASE_URL"
+    log "this is the pointed var $DATABASE_URL"
     HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=$(printenv $HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR)
     log "database url has been set to $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL for migrations"
 elif [ -z ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL+x} ]; then
@@ -51,7 +48,7 @@ wait_for_port() {
 log "starting graphql engine temporarily on port $HASURA_GRAPHQL_SERVER_PORT"
 
 # start graphql engine with metadata api enabled
-graphql-engine serve --database-url $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL --enabled-apis="metadata" &
+graphql-engine serve --database-url "$HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL" --enabled-apis="metadata" &
 # store the pid to kill it later
 PID=$!
 
