@@ -10,12 +10,15 @@ log() {
 
 DEFAULT_MIGRATIONS_DIR="/hasura-migrations"
 TEMP_MIGRATIONS_DIR="/tmp/hasura-migrations"
+export HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR="DATABASE_URL"
+export DATABASE_URL="test:database"
+export HASURA_GRAPHQL_DATABASE_URL="every:present:default"
 
 # configure the target database for migrations
 if [ ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR} ]; then
     log "database url is pointed at env $HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR"
-    PS1=\$$HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR sh -si </dev/null 2>&1
-    HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=$PS1 && \
+    log "This is the pointed var $DATABASE_URL"
+    HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=$(printenv $HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR)
     log "database url has been set to $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL for migrations"
 elif [ -z ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL+x} ]; then
     HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=$HASURA_GRAPHQL_DATABASE_URL
