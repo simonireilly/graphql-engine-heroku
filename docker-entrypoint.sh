@@ -14,11 +14,12 @@ TEMP_MIGRATIONS_DIR="/tmp/hasura-migrations"
 # configure the target database for migrations
 if [ ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR} ]; then
     HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=${!HASURA_GRAPHQL_MIGRATIONS_DATABASE_ENV_VAR}
+    log "database url has been set to $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL for migrations"
 elif [ -z ${HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL+x} ]; then
     HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL=$HASURA_GRAPHQL_DATABASE_URL
+    log "database url has been set to $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL for migrations"
 fi
 
-log "database url has been set to $HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL for migrations"
 
 # check server port and set default as 8080
 if [ -z ${HASURA_GRAPHQL_SERVER_PORT+x} ]; then
