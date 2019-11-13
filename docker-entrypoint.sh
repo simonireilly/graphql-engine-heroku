@@ -48,7 +48,7 @@ wait_for_port() {
 log "starting graphql engine temporarily on port $HASURA_GRAPHQL_SERVER_PORT"
 
 # start graphql engine with metadata api enabled
-graphql-engine serve --database-url "$HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL" --enabled-apis="metadata" &
+graphql-engine --database-url "$HASURA_GRAPHQL_MIGRATIONS_DATABASE_URL" serve --enabled-apis="metadata" &
 # store the pid to kill it later
 PID=$!
 
