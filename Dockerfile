@@ -1,23 +1,17 @@
 FROM hasura/graphql-engine:v1.0.0-beta.9
 
-# Enable the console
-ENV HASURA_GRAPHQL_ENABLE_CONSOLE=true
+# set an env var to let the cli know that
+# it is running in server environment
+ENV HASURA_GRAPHQL_CLI_ENVIRONMENT=server-on-docker
 
-# Change $DATABASE_URL to your heroku postgres URL if you're not using
-# the primary postgres instance in your app
+COPY docker-entrypoint.sh /bin/
+COPY cli-hasura-linux-amd64 /bin/hasura-cli
+RUN chmod +x /bin/hasura-cli
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 CMD graphql-engine \
-    --database-url $DATABASE_URL \
-    serve \
-    --server-port $PORT
-
-## Comment the command above and use the command below to
-## enable an access-key and an auth-hook
-## Recommended that you set the access-key as a environment variable in heroku
-#CMD graphql-engine \
-#    --database-url $DATABASE_URL \
-#    serve \
-#    --server-port $PORT \
-#    --access-key XXXXX \
-#    --auth-hook https://myapp.com/hasura-webhook 
-#
-# Console can be enable/disabled by the env var HASURA_GRAPHQL_ENABLE_CONSOLE
+  --database-url $DATABASE_URL \
+  serve \
+  --server-port $PORT \
+  --enable-console
